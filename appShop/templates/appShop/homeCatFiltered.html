@@ -1,0 +1,94 @@
+
+
+{% extends "base.html" %}
+{% block content%}
+
+{% include "appShop/navbar.html" %}
+
+
+  <!--Main layout-->
+  <main>
+    <div class="container" style=" margin-top: 65px; " >
+
+      <!--Navbar-->
+      {% include "appShop/navBarCateg.html" %}
+
+      <!--/.Navbar-->
+
+      <!--Section: Products v.3-->
+      <section class="text-center mb-4" style=" margin-top: 0em;">
+        {% if messages %}
+        <div class="alert alert-primary message text-left">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+        </div>
+        {% endif %}
+        <!--Grid row-->
+        <div class="row wow fadeIn">
+          {% for item in categs %}
+          <!--Grid column-->
+          <div class="col-lg-3 col-md-6 mb-4">
+
+            <!--Card-->
+            <div class="card">
+              <!--Card image-->
+              <div class="view overlay">
+                <img src={{ item.image.url   }} class="card-img-top"
+                  alt="card 1">
+                <a href="{{item.get_absolute_url}}">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+              <!--Card image-->
+
+              <!--Card content-->
+              <div class="card-body text-center">
+                <!--Category & Title-->
+                <a href="{{item.get_absolute_url}}">
+                  <h5>{{item.title}}</h5>
+                </a>
+                <h5>
+                  <strong>
+                    <a href="{{ item.get_cat_url }}" class="dark-grey-text">{{item.category}}
+                      <span class="badge badge-pill danger-color">NEW</span>
+                    </a>
+                  </strong>
+                </h5>
+
+                <h4 class="font-weight-bold blue-text">
+                  <strong>{{item.price}}$</strong>
+                </h4>
+              </div>
+              <!--Card content-->
+            </div>
+            <!--Card-->
+          </div>
+          <!--Grid column-->
+          {%endfor%}
+      <!--Grid row-->
+        </div>
+      </section>  
+      <!--Pagination-->
+      
+      <div class="pagination">
+        <span class="step-links">
+          {% if categs.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ categs.previous_page_number }}">previous</a>
+          {% endif %}
+            <span class="current">
+              Page {{ categs.number }} of {{ categs.paginator.num_pages }}.
+            </span>
+            
+          {% if categs.has_next %}
+            <a href="?page={{ categs.next_page_number }}">next</a>
+            <a href="?page={{ categs.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+        </span>
+      </div>
+      <!--Pagination-->
+    </div>    
+  </main>
+  <!--Main layout-->
+{% endblock%}

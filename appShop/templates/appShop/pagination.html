@@ -1,0 +1,22 @@
+{% block content%}
+<nav aria-label="Page navigation example" >
+    <ul class="pagination">
+        <li class="page-item">
+            {% if page.has_previous %}
+            <a class="page-link" href="?page={{page.previous_page_number}}"> السابق </a>
+            {% endif %}
+        </li>
+ 
+        <li class="page-item">
+            <a class="page-link">{{page.number}} الصفحة {{page.paginator.num_pages}} من</a> 
+        </li>
+ 
+        <li class="page-item">
+            {% if page.has_next %}
+            <a class="page-link" href="?page={{page.next_page_number}}">  التالي </a>
+            {% endif %}
+        </li>
+    </ul>
+</nav>
+
+{% endblock%}
