@@ -1,0 +1,73 @@
+{% block content%}
+{% load orderCount %}
+{% load static %}
+
+
+<link href= {% static "css/style.min.css" %} rel="stylesheet">
+
+
+
+<!-- example 0 - using absolute position for center -->
+<nav class="navbar navbar-expand-md navbar-dark bg-primary ">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="navbar-collapse collapse w-75" style="text-align: right;"  id="collapsingNavbar">
+            <ul class="navbar-nav" >
+                {%if request.user.is_authenticated  %}
+                <li class="nav-item">
+                    <a href="{% url 'account_logout' %}" class="nav-link">
+                     تسجيل الخروج 
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link waves-effect" href="{% url 'appShop:cartUrl' %}">
+                        <span class="badge red z-depth-1 mr-1"> {{ request.user|counter}} سلة الشراء </span>
+                            <i class="fas fa-shopping-cart"></i>
+                        <!-- <span class="clearfix d-none d-sm-inline-block"> سلة الشراء </span> -->
+                    </a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a href="{% url 'appShop:checkoutUrl' %}" class="btn btn-secondary">
+                            سلة الشراء <span class="badge badge-light">{{ request.user|counter}}</span>
+                    </a>
+                </li> -->
+                {% else %}
+
+                <li class="nav-item">
+                    <a class="nav-link waves-effect" href="{% url 'account_login'%}">
+                            تسجيل الدخول
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link waves-effect" href="{% url 'account_signup' %}">
+                        التسجيل 
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+            
+            <ul class="navbar-nav  ml-auto " >
+                <li class="nav-item active order-md-4" >
+                    <a class="nav-link" href="/" data-toggle="collapse" > الرئيسية  </a>
+                </li>
+                <li class="nav-item order-md-3">
+                    <a class="nav-link" href="/about/"> نبذة عن المحل </a>
+                </li>
+                <li class="nav-item order-md-2">
+                    <a class="nav-link" href="/info/"> معلومات تهمك</a>
+                </li>
+                <li class="nav-item order-md-1 ">
+                    <a class="nav-link" href="/contact/">اتصل بنا</a>
+                </li>
+            </ul>
+            
+        </div>
+        <a class="navbar-brand flex-grow-1 w-25 waves-effect h3 "  style="text-align: right;" href="/">  محل المناديل و البلاستيك</a>
+    </div>
+</nav>
+
+{% endblock%}

@@ -31,3 +31,40 @@ header,
     height: 100vh;
   }
 }
+
+navbar,
+.navbar-expand-md .navbar-collapse {
+    display: flex-column-reverse;
+}
+@media (min-width: 768px) {
+  navbar,
+  .navbar-expand-md .navbar-collapse {
+      display: flex-column-reverse;
+    }
+}
+
+.page-footer {
+  background-color: #929FBA; 
+  /* background-color: #e21c1c;  */
+}
+
+.message{
+  text-align: right;
+}
+
+ul{
+  list-style-type: none;
+}
+
+.btn.btn-md {
+  padding: .7rem 1.6rem;
+  font-size: 1.2rem;
+}
+
+.badge{
+  font-size: 1.0rem;
+}
+
+.alnright{
+  text-align: right;
+}

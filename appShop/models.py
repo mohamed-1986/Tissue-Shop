@@ -12,12 +12,13 @@ CAT_CHOISES=(
 )
 
 class Item(models.Model):
-    title= models.CharField(max_length=100)
-    price= models.FloatField()
-    category= models.CharField(choices= CAT_CHOISES, max_length= 1, default= 'T')
-    slug= models.SlugField()
-    description= models.TextField(max_length= 100, null =True, blank= True)
-    image= models.ImageField(null =True, blank= True)
+    title = models.CharField(max_length=100)
+    price = models.FloatField()
+    discount_price = models.FloatField(null =True, blank= True)
+    category = models.CharField(choices= CAT_CHOISES, max_length= 1, default= 'T')
+    slug = models.SlugField()
+    description = models.TextField(max_length= 100, null =True, blank= True)
+    image = models.ImageField(null =True, blank= True)
     date_added = models.DateTimeField(auto_now_add= True)
     def __str__(self):
         return self.title
@@ -48,14 +49,20 @@ class Item(models.Model):
 
 
 class OrderItem(models.Model):
-    user= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE)
-    item= models.ForeignKey(Item, on_delete= models.CASCADE)
-    quantity= models.IntegerField(default= 1)
-    ordered= models.BooleanField(default= False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE)
+    item = models.ForeignKey(Item, on_delete= models.CASCADE)
+    quantity = models.IntegerField(default= 1)
+    ordered = models.BooleanField(default= False)
 
     def __str__(self):
         return (str(self.quantity)+ '  from the product: '+ self.item.title)
-
+    
+    def quantityPrice(self):
+        return self.quantity* self.item.price
+        
+    def quantityDiscountPrice(self):
+        return self.quantity* self.item.discount_price
+    
 class Order(models.Model):
     user= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE)
     items= models.ManyToManyField(OrderItem)

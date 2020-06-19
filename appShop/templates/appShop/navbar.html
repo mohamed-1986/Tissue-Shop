@@ -21,7 +21,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <!-- Left -->
-        <ul class="navbar-nav mr-auto h3">
+        <ul class="navbar-nav  h3">
           <li class="nav-item active">
             <a class="nav-link waves-effect" href="/">الرئيسية 
               <span class="sr-only">(current)</span>
@@ -39,7 +39,7 @@
         </ul>
 
         <!-- Right -->
-        <ul class="navbar-nav  nav-flex-icons">
+        <ul class="navbar-nav mr-auto nav-flex-icons">
           {%if request.user.is_authenticated  %}
           <li class="nav-item">
             <a class="nav-link waves-effect" href="{% url 'appShop:checkoutUrl' %}">

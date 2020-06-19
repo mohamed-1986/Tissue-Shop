@@ -1,0 +1,87 @@
+
+
+{% extends "base.html" %}
+{% block content%}
+
+{% include "appShop/index1.html" %}
+{% load totals %}
+{% load orderCount %}
+
+  <!--Main layout-->
+  <main>
+    <div class="container" style=" margin-top: 65px; " >
+      {% if messages %}
+        <div class="alert alert-primary message text-left">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+        </div>
+        {% endif %}
+      <div class="alnright mb-4" style=" margin-top: 0em;">
+        <h3>
+          :سلة الشراء
+        </h3>
+        <!-- <div class="text-right  row wow fadeIn" > -->
+        
+        <table class="table" >
+          <thead>
+            <tr>
+              <th scope="col"> القيمة </th>
+              <th scope="col"> ثمن الوحدة</th>
+              <th scope="col">العدد</th>
+              <th scope="col">الصنف</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in myOrderItems %}
+            <tr>
+              {% if p.item.discount_price %}
+              <td>{{ p.quantityDiscountPrice}}</td>
+              <td>{{p.item.discount_price}}</td>
+              {% else%}
+              <td>{{ p.quantityPrice}}</td>
+              <td>{{p.item.price}}</td>
+              {% endif%}
+
+              <td>{{p.quantity}}</td>
+              <td>  <a href="/removeFromCart/?nexturl={{request.path}}?slug={{p.item.slug}}" class="btn "> ازل من السلة</a>  {{p.item.title}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="alnright mb-4" style=" margin-top: 0em;">
+        <h3>
+          :الحساب الكلي
+        </h3>
+        <table class="table" >
+          <thead>
+            <tr>
+              <th scope="col"> القيمة </th>
+        
+              <!-- <th scope="col">الصنف</th> -->
+              
+            </tr>
+            <tr>
+              <td>{%Totals U=request.user%}</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <!-- <td>{{ total}}</td> -->
+              <!-- <td>{{p.item.discount_price}}</td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="alnright mb-4" style=" margin-top: 0em;">
+        <a href="{% url 'appShop:checkoutUrl' %}" class="btn btn-primary btn-md my-0 p" >
+          الدفع
+        </a>
+    </div>
+    </div>    
+  </main>
+  <!--Main layout-->
+{% endblock%}

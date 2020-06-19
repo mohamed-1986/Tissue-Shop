@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block content%}
-{% include "appShop/navbar.html" %}
+{% include "appShop/index1.html" %}
 {% load orderCount %}
+{% load totals %}
   <!--Main layout-->
   <main class="mt-5 pt-4">
     <div class="container wow fadeIn">
@@ -227,7 +228,7 @@
             {% endif %}
             <li class="list-group-item d-flex justify-content-between">
               <span>Total (USD)</span>
-              <strong>$ {{}} </strong>
+              <strong>$ {%Totals U=request.user%} </strong>
             </li>
           </ul>
           <!-- Cart -->

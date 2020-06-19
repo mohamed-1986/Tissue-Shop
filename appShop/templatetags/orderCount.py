@@ -7,3 +7,5 @@ register = template.Library()
 def counter(user):
     A= OrderItem.objects.filter(user= user, ordered= False).all()
     return A.count()
+
+
