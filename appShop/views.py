@@ -22,7 +22,7 @@ def Checkout(request):
 class HomeView(ListView):
     model= Item
     template_name = "appShop/home.html"
-    paginate_by = 8
+    paginate_by = 2
     ordering= ["-date_added"]
   
 

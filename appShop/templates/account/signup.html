@@ -5,15 +5,18 @@
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block content %}
+{%load static%}
+{% include "appShop/index1.html" %}
+<link rel= "stylesheet" href={% static "css/footer.css" %}>
 <main>
   <div class="container">
-    <section class=" mb-4">
+    <section class=" mb-4 alnright">
       <div class="row wow fadeIn" style="margin-top: 30px;">
-        <div class="col-6">       
+        <div class="col-12">       
 
-          <h1>{% trans "Sign Up" %}</h1>
+          <h1>{% trans "تسجيل لاول مرة" %}</h1>
 
-          <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+          <p>{% blocktrans %} لو تمتلك حساب بالفعل قم بتسجيل<a href="{{ login_url }}"> الدخول </a>  {% endblocktrans %}</p>
 
           <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
             {% csrf_token %}
@@ -21,7 +24,7 @@
             {%if redirect_field_name %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_name }}" />
             {% endif %}
-            <button type="submit">{% trans "Sign Up" %} &raquo;</button>
+            <button type="submit">{% trans "موافق" %} &raquo;</button>
           </form>
 
         </div>

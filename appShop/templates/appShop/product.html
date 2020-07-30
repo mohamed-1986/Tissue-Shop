@@ -4,7 +4,7 @@
 {% load quantityforproductview %}
 {% include "appShop/index1.html" %}
 {% load static%}
-
+{% TheQuantity U=request.user S=object.slug as quantity_filter_result %}
 
 <!--Main layout-->
 <main class="mt-5 pt-4">
@@ -80,7 +80,7 @@
           <p>{{ object.description }}</p>
 
           <p class="lead">
-            {% TheQuantity U=request.user S=object.slug %} :عدد القطع من {{ object.title}} في السلة 
+            {{ quantity_filter_result }} :عدد القطع من {{ object.title}} في السلة 
           </p>
           
             
@@ -88,10 +88,11 @@
             {% csrf_token %}
             {{form.as_p}}
             <input type= "submit" value="اضف الي السلة" class="btn btn-primary btn-md my-0 p">
-
+            {% if quantity_filter_result%}
             <a href="{{object.remove_from_cart_url}}" class="btn btn-danger btn-md my-0 p" >
                 ازل من السلة
             </a>
+            {% endif %}
             
         </div>
         <!--Content-->

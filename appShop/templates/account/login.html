@@ -6,18 +6,23 @@
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
+{%load static%}
+{% include "appShop/index1.html" %}
+
+<link rel= "stylesheet" href={% static "css/footer.css" %}>
   <main>
     <div class="container">
-      <section class=" mb-4">
+      <section class=" mb-4   alnright">
         <div class="row wow fadeIn" style="margin-top: 30px;">
-          <div class="col-6">
+          <div class="col-12">
 
-            <h1>{% trans "Sign In" %}</h1> <br>
+            <h1>{% trans "تسجيل الدخول" %}</h1> <br>
             {% get_providers as socialaccount_providers %}
             {% if socialaccount_providers %}
-            <p>{% blocktrans with site.name as site_name %}Please sign in with one
-            of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-            for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+            <p>{% blocktrans with site.name as site_name %}
+              :قم بتسجيل الدخول او تسجيل الدخول عن طريق حساب جوجل
+               <a href="{{ signup_url }}">تسجيل</a>
+            {% endblocktrans %}</p>
 
             <div class="socialaccount_ballot">
               
@@ -39,8 +44,8 @@
                 {% if redirect_field_value %}
                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                 {% endif %}
-                <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-                <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
+                <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "استرجاع كلمة السر" %}</a>
+                <button class="primaryAction" type="submit">{% trans "دخول" %}</button>
               </form>
             </div>
           </div>
@@ -48,5 +53,5 @@
       </section>
     </div>
   </main>
- 
+  {% include "appShop/footer1.html" %}
 {% endblock %}

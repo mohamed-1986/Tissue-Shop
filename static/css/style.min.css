@@ -1,4 +1,4 @@
-.view,body,html{height:100%}.carousel{height:50%}.carousel .carousel-inner,.carousel .carousel-inner .active,.carousel .carousel-inner .carousel-item{height:100%}@media (max-width:776px){.carousel{height:100%}}.page-footer{background-color:#929FBA}
+.view,body,html{height:100%}.carousel{height:50%}.carousel .carousel-inner,.carousel .carousel-inner .active,.carousel .carousel-inner .carousel-item{height:100%}@media (max-width:776px){.carousel{height:100%}}
 .body{
 background-color:000000;
 color:ffffff;
@@ -43,10 +43,6 @@ navbar,
     }
 }
 
-.page-footer {
-  background-color: #929FBA; 
-  /* background-color: #e21c1c;  */
-}
 
 .message{
   text-align: right;
@@ -67,4 +63,12 @@ ul{
 
 .alnright{
   text-align: right;
+}
+
+.body{
+  position: relative;
+}
+
+.page-footer{
+  background-color: #929fBA;
 }
