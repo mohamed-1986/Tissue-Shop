@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.urls import reverse
 from django.utils import timezone
-
+from django.forms import ModelForm
 
 CAT_CHOISES=(
     ('T', 'مناديل'),
@@ -73,3 +73,17 @@ class Order(models.Model):
     def __str__(self):
         return self.user.username
         # return str(self.orderedDate)
+
+
+class Billing(models.Model):
+    Full_name = models.CharField(max_length=40)
+    Email = models.EmailField(max_length=254)
+    Phone = models.IntegerField()
+    Address1 = models.CharField(max_length=100)
+    Address2 = models.CharField(max_length=100)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE )
+
+class BillForm(ModelForm):
+    class meta:
+        model = Billing
+        exclude = ['user',]

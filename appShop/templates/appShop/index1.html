@@ -43,6 +43,13 @@
                     </a>
                 </li>
                 {% endif %}
+                {%if request.user.is_authenticated  %}
+                <li class="nav-item">
+                    <a class="nav-link waves-effect">
+                    مرحبا {{request.user.username}} 
+                    </a>
+                </li>
+                {% endif %}
             </ul>
             
             <ul class="navbar-nav  ml-auto " >

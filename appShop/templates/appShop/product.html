@@ -89,8 +89,9 @@
             {{form.as_p}}
             <input type= "submit" value="اضف الي السلة" class="btn btn-primary btn-md my-0 p">
             {% if quantity_filter_result%}
-            <a href="{{object.remove_from_cart_url}}" class="btn btn-danger btn-md my-0 p" >
-                ازل من السلة
+          
+            <a href="/removeFromCart/?nexturl={{request.path}}&&slug={{object.slug}}" class="btn btn-danger btn-md my-0 p" >
+              ازل من السلة
             </a>
             {% endif %}
             
