@@ -8,9 +8,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import QuantityForm
 from .models import BillForm
 
-
+@login_required(login_url='/accounts/login/')
 def Checkout(request):
-    if request.user.is_authenticated:
         # try:
         #     billing_qs= Billing.objects.get(user= request.user)
         #     if request.method== 'POST':
@@ -22,16 +21,22 @@ def Checkout(request):
         #         form = BillForm(instance= billing_qs)
         #     return render(request, 'appShop/checkout.html', {'form': form})    
         # except:
-        if request.method== 'POST':
-            form = BillForm(request.POST)
-            if form.is_valid:
-                form.save()
-        else:
-            form = BillForm()
-        return render(request, 'appShop/checkout.html', {'form': form})
+    U = request.user
+    print(U.username)
+    if request.method== 'POST':
+        form = BillForm(request.POST)
+        if form.is_valid:
+            # F = form.save(commit=False)
+            # F.user = U
+            # F.save()
+            form.save()
+        return HttpResponseRedirect('/')
     else:
-        messages.add_message(request, messages.INFO, "من فضلك قم بتسجيل الدخول")
-        return redirect("/accounts/login/")
+        form = BillForm(initial={'user': U})
+    return render(request, 'appShop/checkout.html', {'form': form})
+    # else:
+    #     messages.add_message(request, messages.INFO, "من فضلك قم بتسجيل الدخول")
+    #     return redirect("/accounts/login/")
     
 
 class HomeView(ListView):
@@ -83,33 +88,29 @@ def AddToCart(request, slug):
                 Order_first = Order_qs[0]
                 #check if that order contains the item required?!
                 if Order.objects.filter(items__item__slug= slug ).exists():
-                    print(order_item.quantity)
                     order_item.quantity = order_item.quantity+ int(num)
                     order_item.save()
-                    messages.add_message(request, messages.INFO, 'Item quantity is modified.')
+                    messages.add_message(request, messages.INFO, 'تم تعديل الكمية')
                 #here we are sure that the user ahs an active order but not containing the 
                 #specific item
                 else:
                     order_item.quantity = num
                     order_item.save()
                     Order_first.items.add(order_item)
-                    messages.add_message(request, messages.INFO, 'The item is added to cart')
+                    messages.add_message(request, messages.INFO, 'تم اضافة الصنف في السلة')
             else:
                 x= Order(user= request.user)
                 x.orderedDate= timezone.now()
                 x.save()
                 order_item.quantity = num
                 x.items.add(order_item)
-                messages.add_message(request, messages.INFO, 'New order has created')
-                messages.add_message(request, messages.INFO, 'Item is added to cart')
-    
+                messages.add_message(request, messages.INFO, 'تم اضافة طلب جديد و تم اضافة صنف في السلة')   
     return redirect("appShop:productUrl", slug= slug)
 
 @login_required(login_url='/accounts/login/')
 def RemoveFromCart(request):
     UrlGet = request.GET["nexturl"]
     SlugGet = request.GET["slug"]
-    print(SlugGet)
     try:
         item= Item.objects.get(slug= SlugGet)
         order_item = OrderItem.objects.get(

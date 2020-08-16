@@ -3,6 +3,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.utils import timezone
 from django.forms import ModelForm
+from django.utils.translation import gettext_lazy as _
 
 CAT_CHOISES=(
     ('T', 'مناديل'),
@@ -84,6 +85,12 @@ class Billing(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE )
 
 class BillForm(ModelForm):
-    class meta:
+    class Meta:
         model = Billing
         exclude = ['user',]
+        labels = {
+            'Email': _('اميل'),
+        }
+        help_texts = {
+            'Phone': _('مثال 01000099518'),
+        }
