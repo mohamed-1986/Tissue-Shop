@@ -25,7 +25,7 @@ SECRET_KEY = 'm=o&6)wlug)k7#rwu#^3-$=xe$t4iabbg=@myq8_0kll^!h(d6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','mohamed1986.pythonanywhere.com']
 
 #Add django-allauth:
 AUTHENTICATION_BACKENDS = (

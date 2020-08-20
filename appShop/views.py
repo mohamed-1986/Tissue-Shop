@@ -10,30 +10,25 @@ from .models import BillForm
 
 @login_required(login_url='/accounts/login/')
 def Checkout(request):
-        # try:
-        #     billing_qs= Billing.objects.get(user= request.user)
-        #     if request.method== 'POST':
-        #         form = BillForm(request.POST)
-        #         if form.is_valid:
-        #             form.save()
-        #         return HttpResponseRedirect('/')
-        #     else:
-        #         form = BillForm(instance= billing_qs)
-        #     return render(request, 'appShop/checkout.html', {'form': form})    
-        # except:
-    U = request.user
-    print(U.username)
-    if request.method== 'POST':
-        form = BillForm(request.POST)
-        if form.is_valid:
-            # F = form.save(commit=False)
-            # F.user = U
-            # F.save()
-            form.save()
-        return HttpResponseRedirect('/')
-    else:
-        form = BillForm(initial={'user': U})
-    return render(request, 'appShop/checkout.html', {'form': form})
+    try:
+        billing_qs= Billing.objects.get(user= request.user)
+        if request.method== 'POST':
+            form = BillForm(request.POST)
+            if form.is_valid:
+                form.save()
+            return HttpResponseRedirect('/')
+        else:
+            form = BillForm(instance= billing_qs)
+        return render(request, 'appShop/checkout.html', {'form': form})    
+    except:
+        if request.method== 'POST':
+            form = BillForm(request.POST)
+            if form.is_valid:
+                form.save()
+            return HttpResponseRedirect('/')
+        else:
+            form = BillForm(initial={'user': request.user})
+        return render(request, 'appShop/checkout.html', {'form': form})
     # else:
     #     messages.add_message(request, messages.INFO, "من فضلك قم بتسجيل الدخول")
     #     return redirect("/accounts/login/")
