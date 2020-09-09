@@ -53,7 +53,10 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -143,3 +146,11 @@ STATIC_ROOT= os.path.join(BASE_DIR,'static_root')
 MEDIA_ROOT= os.path.join(BASE_DIR, 'appShop/media')
 # ACCOUNT_ADAPTER = 'appShop.adapter.AccountAdapter'
 LOGIN_REDIRECT_URL= '/'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'mohamed.samir.saleh@gmail.com'
+EMAIL_HOST_PASSWORD = 'dqnjdtslnuekpecc'

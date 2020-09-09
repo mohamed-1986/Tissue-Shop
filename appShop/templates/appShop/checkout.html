@@ -11,17 +11,49 @@
       {% include "appShop/navBarCateg.html" %}
       <!--/.Navbar-->
 
-      <div class="text-center mb-4" style=" margin-top: 0em;">
+      <!-- <div class="text-center mb-4" style=" margin-top: 0em;">
         <div class="alnright">
-          <h3><p>:اكمل بيانات الشراء</p></h3><br>
+          <h3><p>:اكمل بيانات الشراء</p></h3><br>  -->
           <!-- Form -->
-          <form method="POST" action="">
+      <!--     <form method="POST" action="">
             {% csrf_token %}
             {{ form.as_p }}
             <input type= "submit" value="حفظ و متابعة" class="btn btn-primary btn-md my-0 p">
           </form>
         </div>
-      </div>
+      </div> -->
+
+      <div class="alnright"> 
+        <form method="POST"> 
+            {% csrf_token %} 
+            <div class="form-group"> 
+              {{ form.Full_name }} 
+              <label>:الاسم بالكامل </label> 
+            </div>
+            <div class="form-group">
+              {{ form.Email }}
+              <label>:الاميل </label>
+            </div>
+            <div class="form-group">
+              {{ form.Phone }}
+              <label>:التليفون </label>
+            </div>
+            <div class="form-group">
+              {{ form.Address1 }}
+              <label>:العنوان بالتفصيل </label>
+            </div>
+            <div class="form-group">
+              {{ form.Address2 }}
+              <label>:العنوان الثانى </label>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">  حفظ و متابعة </button> 
+        </form> 
+      </div> 
+
+
+
+
 
     </div>    
   </main>

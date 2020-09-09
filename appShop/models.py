@@ -82,7 +82,10 @@ class Billing(models.Model):
     Phone = models.IntegerField()
     Address1 = models.CharField(max_length=100)
     Address2 = models.CharField(max_length=100)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE )
+    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE , primary_key=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL ,null=True)
+    def __str__(self):
+        return self.Full_name
 
 class BillForm(ModelForm):
     class Meta:

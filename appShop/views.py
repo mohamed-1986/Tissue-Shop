@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView
 from .models import Item, OrderItem, Order, CAT_CHOISES, Billing
 from django.utils import timezone
@@ -7,32 +8,64 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import QuantityForm
 from .models import BillForm
+from django.core.mail import EmailMessage
 
 @login_required(login_url='/accounts/login/')
 def Checkout(request):
     try:
-        billing_qs= Billing.objects.get(user= request.user)
-        if request.method== 'POST':
-            form = BillForm(request.POST)
-            if form.is_valid:
-                form.save()
-            return HttpResponseRedirect('/')
-        else:
-            form = BillForm(instance= billing_qs)
-        return render(request, 'appShop/checkout.html', {'form': form})    
+        OrderItem_qs = OrderItem.objects.filter(
+            user= request.user ,
+            ordered = False
+            ).all()
+
+        Order_qs = Order.objects.get(
+            ordered = False , 
+            user = request.user
+            )
+        
     except:
-        if request.method== 'POST':
-            form = BillForm(request.POST)
-            if form.is_valid:
-                form.save()
-            return HttpResponseRedirect('/')
-        else:
-            form = BillForm(initial={'user': request.user})
-        return render(request, 'appShop/checkout.html', {'form': form})
-    # else:
-    #     messages.add_message(request, messages.INFO, "من فضلك قم بتسجيل الدخول")
-    #     return redirect("/accounts/login/")
-    
+        OrderItem_qs = None
+        Order_qs = None
+    try:
+        billing_qs = Billing.objects.get(user= request.user)
+    except:
+        billing_qs = None
+
+    # IF user previously recorded billing address
+    if request.method == 'POST':
+        form = BillForm(request.POST , instance= billing_qs)
+        if form.is_valid:
+            F = form.save(commit= False)
+            F.user = request.user
+            F.save()
+            
+            # here we send E-mail with orderitems to merchant:
+            contacts = ['mohamed.samir.saleh@gmail.com']
+            body = OrderItem_qs
+            subject = "new order request"
+            SendEmailNewOrder(subject, body, contacts)
+
+            #turn the ordered into True in Oder , OrderItem:
+            Order_qs.ordered = True
+            Order_qs.save()
+            elements = Order_qs.items.all()
+            print(elements)
+            for Element in elements:
+                Element.ordered = True
+                Element.save()
+
+
+        print("order is ", OrderItem_qs)
+        return HttpResponseRedirect('/')
+   
+    else:
+        form = BillForm(initial={'user': request.user}, instance= billing_qs)
+        return render(request, 'appShop/checkout.html', {'form': form})  
+
+
+def SendEmailNewOrder(subject, body, contacts):
+    email = EmailMessage(subject , body, to = contacts)
+    email.send()
 
 class HomeView(ListView):
     model= Item
@@ -55,7 +88,6 @@ class ProductView(DetailView):
         context = super(ProductView, self).get_context_data(**kwargs)
         context['form'] = QuantityForm() 
         return context
-    
 
 
 @login_required(login_url='/accounts/login/')
@@ -98,7 +130,9 @@ def AddToCart(request, slug):
                 x.orderedDate= timezone.now()
                 x.save()
                 order_item.quantity = num
+                order_item.save()
                 x.items.add(order_item)
+                x.save()
                 messages.add_message(request, messages.INFO, 'تم اضافة طلب جديد و تم اضافة صنف في السلة')   
     return redirect("appShop:productUrl", slug= slug)
 
@@ -149,7 +183,6 @@ def Cart(request):
                 total += i.quantity * i.item.price
         context= {
             "myOrderItems": myOrderItems }
-            # "total": 10}
         return render(request, "appShop/cart.html", context)
     else:
         messages.add_message(request, messages.INFO, 'سلة الشراء فارغة')

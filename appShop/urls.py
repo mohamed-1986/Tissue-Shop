@@ -16,7 +16,6 @@ urlpatterns = [
     path('accounts/signup/next/', Profile),
     path('product/<slug>/',  ProductView.as_view(), name='productUrl'),
     path('add-to-cart/<slug>/', AddToCart , name='addToCartUrl'),
-    # path('remove-from-cart/<slug>/', RemoveFromCart , name='removeFromCartUrl'),
     path('removeFromCart/',RemoveFromCart , name='removeFromCartUrl' ) ,
     path('checkout/', Checkout ,name= 'checkoutUrl'),
     path('info/', Info, name='infoUrl'),
