@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.utils import timezone
 from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
+from phonenumber_field.modelfields import PhoneNumberField
+
 
 CAT_CHOISES=(
     ('T', 'مناديل'),
@@ -79,7 +81,8 @@ class Order(models.Model):
 class Billing(models.Model):
     Full_name = models.CharField(max_length=40)
     Email = models.EmailField(max_length=254)
-    Phone = models.IntegerField()
+    # Phone = models.IntegerField()
+    phone_number = PhoneNumberField()
     Address1 = models.CharField(max_length=100)
     Address2 = models.CharField(max_length=100)
     # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE , primary_key=True)

@@ -1,18 +1,21 @@
 {% extends "account/base.html" %}
 
 {% load i18n %}
+{% load static%}
 
 {% block head_title %}{% trans "Sign Out" %}{% endblock %}
 
 {% block content %}
+{% include "appShop/index1.html" %}
+<link rel= "stylesheet" href={% static "css/footer.css" %}>
 <main>
-  <div class="container">
+  <div class="container alnright">
     <section class=" mb-4">
       <div class="row wow fadeIn" style="margin-top: 30px;">
-        <div class="col-6">
+        <div class="col-12">
 
-          <h1>{% trans "Sign Out" %}</h1>
-          <p>{% trans 'Are you sure you want to sign out?' %}</p>
+          <h1>{% trans "تسجيل الخروج" %}</h1>
+          <p>{% trans 'هل تريد تسجيل الخروج؟' %}</p>
           <form method="post" action="{% url 'account_logout' %}">
             {% csrf_token %}
             {% if redirect_field_value %}

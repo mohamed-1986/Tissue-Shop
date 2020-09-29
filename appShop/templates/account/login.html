@@ -9,6 +9,27 @@
 {%load static%}
 {% include "appShop/index1.html" %}
 
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1728712390612003',
+      xfbml      : true,
+      cookies    : true,
+      version    : 'v8.0'
+    });
+    FB.AppEvents.logPageView();
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
 <link rel= "stylesheet" href={% static "css/footer.css" %}>
   <main>
     <div class="container">
@@ -22,8 +43,10 @@
             <p>{% blocktrans with site.name as site_name %}
               :قم بتسجيل الدخول او تسجيل الدخول عن طريق حساب جوجل
                <a href="{{ signup_url }}">تسجيل</a>
-            {% endblocktrans %}</p>
-
+               {{ site_name }}
+              {% endblocktrans %}</p>
+            
+              <a href="{% provider_login_url 'facebook' %}">Sign Up</a>
             <div class="socialaccount_ballot">
               
               <ul class="socialaccount_providers">
@@ -53,5 +76,11 @@
       </section>
     </div>
   </main>
+
+
+
+  
+
   {% include "appShop/footer1.html" %}
-{% endblock %}
+
+  {% endblock %}

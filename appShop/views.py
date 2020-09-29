@@ -34,16 +34,18 @@ def Checkout(request):
     # IF user previously recorded billing address
     if request.method == 'POST':
         form = BillForm(request.POST , instance= billing_qs)
-        if form.is_valid:
+        if form.is_valid():
             F = form.save(commit= False)
             F.user = request.user
             F.save()
-            
             # here we send E-mail with orderitems to merchant:
             contacts = ['mohamed.samir.saleh@gmail.com']
-            body = OrderItem_qs
+            body = list(OrderItem_qs)
             subject = "new order request"
-            SendEmailNewOrder(subject, body, contacts)
+            print("Contacts "   , contacts, " Body ", body , " Subject ", subject)
+            email = EmailMessage(subject , body, to = contacts)
+            email.send()
+            # SendEmailNewOrder(subject, body, contacts)
 
             #turn the ordered into True in Oder , OrderItem:
             Order_qs.ordered = True
@@ -63,9 +65,9 @@ def Checkout(request):
         return render(request, 'appShop/checkout.html', {'form': form})  
 
 
-def SendEmailNewOrder(subject, body, contacts):
-    email = EmailMessage(subject , body, to = contacts)
-    email.send()
+# def SendEmailNewOrder(subject, body, contacts):
+#     email = EmailMessage(subject , body, to = contacts)
+#     email.send()
 
 class HomeView(ListView):
     model= Item
@@ -94,15 +96,16 @@ class ProductView(DetailView):
 def AddToCart(request, slug):
     #loading Item, orderItem, Order:
     item= get_object_or_404(Item, slug= slug)
+    Order_qs= Order.objects.filter(
+        user= request.user,
+        ordered= False
+    )
     order_item, created= OrderItem.objects.get_or_create(
         item= item,
         user= request.user,
         ordered= False
         )
-    Order_qs= Order.objects.filter(
-        user= request.user,
-        ordered= False
-    )
+    
     if request.method == 'POST':
     # create a form instance and populate it with data from the request:
         I= QuantityForm(request.POST)
@@ -140,6 +143,7 @@ def AddToCart(request, slug):
 def RemoveFromCart(request):
     UrlGet = request.GET["nexturl"]
     SlugGet = request.GET["slug"]
+    
     try:
         item= Item.objects.get(slug= SlugGet)
         order_item = OrderItem.objects.get(
@@ -147,8 +151,27 @@ def RemoveFromCart(request):
             user= request.user,
             ordered= False
             )
+        order_qs = Order.objects.get(
+            user = request.user,
+            ordered = False,
+            items__item__slug = SlugGet
+        )
+        # order_qs.items.remove( order_item )
+        # order_qs.save()
         order_item.delete()
+
         messages.add_message(request, messages.INFO, 'تم ازالة المنتج')
+        order_qs = Order.objects.get(
+            user = request.user,
+            ordered = False
+        )
+        NoOfRemainingOrderItems= order_qs.items.all()
+        print(NoOfRemainingOrderItems)
+        if not NoOfRemainingOrderItems:
+            print("there is no order items remained we have to delete the order")
+            order_qs.delete()
+            # order_qs.save()
+
     except:
         messages.add_message(request, messages.INFO, 'منتج غير موجود')
     return redirect(UrlGet)
